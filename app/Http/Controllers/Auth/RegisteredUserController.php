@@ -51,6 +51,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        seesion()->flash('success', 'Your account has been created');
+
         return redirect(RouteServiceProvider::HOME);
     }
 }
