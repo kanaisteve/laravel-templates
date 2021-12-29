@@ -26,11 +26,29 @@ class Post extends Model
     }
 
     public function scopeFilter($query, array $filters) {
-        // search functionality
+        // filter posts by search request
         $query->when($filters['search'] ?? false, function($query, $search) {
-            $query
+            $query->where(function($query){
+               $query 
                 ->where('title', 'like', '%' . $search . '%')  
-                ->orWhere('body', 'like', '%' . $search . '%'); 
+                ->orWhere('body', 'like', '%' . $search . '%');
+            });
+        });
+
+        // filter posts by category
+        $query->when($filters['category'] ?? false, function($query, $category) {
+            $query->whereHas('category', function($query){
+                    $query ->where('slug', $category);
+                }
+            );   
+        });
+
+        // filter posts by author
+        $query->when($filters['author'] ?? false, function($query, $author) {
+            $query->whereHas('author', function($query){
+                    $query ->where('username', $author);
+                }
+            );   
         });
     }
 

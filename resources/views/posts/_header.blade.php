@@ -11,26 +11,7 @@
     <div class="space-y-2 lg:space-y-0 lg:space-x-4 mt-4">
         <!--  Category -->
         <div class="relative bg-gray-100 rounded-xl lg:inline-flex">
-            <x-dropdown>
-                <x-slot name="trigger">
-                    <button class="py-2 pl-3 pr-9 text-sm font-semibold w-full lg:w-36 flex lg:inline-flex">
-                        {{ isset($currentCategory) ? ucwords($currentCategory->name) : 'Categories'}}
-                        <x-down-arrow class="absolute pointer-events-none" style="right: 12px;"/>
-                    </button>
-                </x-slot>
-
-                <x-dropdown-item href="/">All</x-dropdown-item>
-                @foreach ($categories as $category)
-                    <a href="/categories/{{ $category->slug }}" 
-                        class="
-                            block text-left px-3 text-sm leading-6 
-                            hover:bg-blue-500 focus:bg-blue-500 hover:text-white focus:text-white
-                            {{ isset($currentCategory) && $currentCategory->id === $category->id ? 'bg-blue-500 text-white' : '' }}
-                        ">
-                        {{ ucwords($category->slug) }}
-                    </a>
-                @endforeach
-            </x-dropdown>
+            <x-category-dropdown />
         </div> 
 
         <!-- Other Filters -->
@@ -57,7 +38,10 @@
 
         <!-- Search -->
         <div class="relative flex lg:inline-flex items-center bg-gray-100 rounded-xl px-3 py-2">
-            <form method="GET" action="#">
+            <form method="GET" action="/">
+                @if (request('category'))
+                    <input type="hidden" name="category" value="{{ request('category') }}" />
+                @endif
                 <input type="text" 
                     name="search" 
                     placeholder="Find something"

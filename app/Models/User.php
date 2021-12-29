@@ -44,6 +44,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // Hash password whenever a user registers an account
+    // public function setPasswordAttribute($password) {
+    //     $this->attribute['password'] = bcrypt($password);
+    // }
+
     // featch all posts with foreign key user_id  
     public function author() {  // this function will fetch posts with the user_id foreign key.
         return $this->hasMany(Post::classs);
